@@ -20,20 +20,62 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string filename, vector<string> &names, vector<int> &scores, vector<char> &grades){
+    string data;
+    ifstream source(filename);
+    int a,b,c,sum = 0;
+    char p[1000];
+    while(getline(source,data)){
+        char format[] = "%[^:]: %d %d %d";
+        sscanf(data.c_str(),format,p,&a,&b,&c);
+        sum = a + b + c;
+        scores.push_back(sum);
+        names.push_back(p);
+        grades.push_back(score2grade(sum));
+    }
 }
 
-void getCommand(){
-
+void getCommand(string &command, string &key){
+    cout << "Please input your command: ";
+    string take;
+    char A[1000];
+    char B[1000];
+    getline(cin,take);
+    char format[] = "%s %[^\n]";
+    sscanf(take.c_str(),format,A,B);
+    command = A;
+    key = B;
 }
 
-void searchName(){
+void searchName(vector<string>names, vector<int> scores, vector<char> grades, string key){
+    cout << "---------------------------------"<< endl;
+    bool find = false;
+    for(unsigned int i = 0; i < names.size(); i++){
+        string K = toUpperStr(names[i]);
+        if(K == key){
+            cout << names[i] << "'s score = " << scores[i] << endl;
+            cout << names[i] << "'s grade = " << grades[i] << endl;
+            find = true;
+        }
+        
+    }
+    if(!find) cout << "Cannot found." << endl;
+    cout << "---------------------------------" << endl;
+}   
 
-}
-
-void searchGrade(){
-
+void searchGrade(vector<string>names, vector<int> scores, vector<char> grades, string key){
+    bool find = false ;
+    cout << "---------------------------------"<< endl;
+    for(unsigned int i = 0; i < grades.size(); i++){
+        char K = key[0];
+        char G = toupper(grades[i]);
+        if(G == K){
+            cout << names[i] << " (" << scores[i] << ")"<< endl;
+            find = true;
+        }    
+    }
+    if(!find) cout << "Cannot found." << endl;
+    cout << "---------------------------------" << endl;
 }
 
 
